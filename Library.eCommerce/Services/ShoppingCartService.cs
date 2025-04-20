@@ -24,7 +24,7 @@ namespace Library.eCommerce.Services
                 return instance;
             }
         }
-        private ShoppingCartService()
+        public ShoppingCartService()
         {
             Items = new List<CartItem>();
         }

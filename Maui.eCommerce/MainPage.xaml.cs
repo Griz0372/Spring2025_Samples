@@ -9,6 +9,7 @@ namespace Maui.eCommerce
         {
             InitializeComponent();
             BindingContext = new MainViewModel();
+            BindingContext = new ShoppingCartManagementViewModel();
         }
 
         private void InventoryClicked(object sender, EventArgs e)
@@ -29,6 +30,11 @@ namespace Maui.eCommerce
         private void ConfigClicked(object sender, EventArgs e)
         {
             Shell.Current.GoToAsync("//Configuration");
+        }
+
+        private void CartSelected(object sender, EventArgs e)
+        {
+            Console.WriteLine("Cart Selected");
         }
     }
 }

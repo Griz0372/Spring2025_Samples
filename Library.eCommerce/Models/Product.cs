@@ -1,33 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Spring2025_Samples.Models
+﻿public class Product
 {
-    public class Product
+    public int Id { get; set; }
+    public string? Name { get; set; }
+    public decimal Price { get; set; } 
+    public int StockQuantity { get; set; } 
+    
+    public string? Display
     {
-        public int Id { get; set; }
-
-        public string? Name { get; set; }
-
-        public string? Display
+        get
         {
-            get
-            {
-                return $"{Id}. {Name}";
-            }
+            return $"{Id}. {Name} - ${Price:F2}";
         }
-
-        public Product()
-        {
-            Name = string.Empty;
-        }
-
-        public override string ToString()
-        {
-            return Display ?? string.Empty;
-        }
+    }
+    
+    public Product()
+    {
+        Name = string.Empty;
+        Price = 0.0m;
+        StockQuantity = 0;
+    }
+    
+    public override string ToString()
+    {
+        return Display ?? string.Empty;
     }
 }

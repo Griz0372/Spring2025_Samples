@@ -24,14 +24,13 @@ namespace Library.eCommerce.Services
                 return instance;
             }
         }
-        
-        public List<CartItem> Items { get; private set; }
-        public decimal TaxRate { get; set; } = 0.0m; // Default tax rate
-        
         private ShoppingCartService()
         {
             Items = new List<CartItem>();
         }
+        
+        public List<CartItem> Items { get; private set; }
+        public decimal TaxRate { get; set; } = 0.0m; // Default tax rate
         
         public void AddToCart(Product product, int quantity)
         {

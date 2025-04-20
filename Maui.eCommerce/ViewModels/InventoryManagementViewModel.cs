@@ -13,9 +13,24 @@ namespace Maui.eCommerce.ViewModels
 {
     public class InventoryManagementViewModel : INotifyPropertyChanged
     {
+        private string _sortOption = "Name";
         public Product? SelectedProduct { get; set; }
         public string? Query { get; set; }
         private ProductServiceProxy _svc = ProductServiceProxy.Current;
+
+        public string SortOption
+        {
+            get => _sortOption;
+            set
+            {
+                if (_sortOption != value)
+                {
+                    _sortOption = value;
+                    NotifyPropertyChanged();
+                    NotifyPropertyChanged(nameof(Products));
+                }
+            }
+        }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -38,7 +53,19 @@ namespace Maui.eCommerce.ViewModels
         {
             get
             {
-                var filteredList = _svc.Products.Where(p => p?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+                var filteredList = _svc.Products.Where(p =>
+                    p?.Name?.ToLower().Contains(Query?.ToLower() ?? string.Empty) ?? false);
+
+                // Apply sorting
+                if (_sortOption == "Name")
+                {
+                    filteredList = filteredList.OrderBy(p => p?.Name);
+                }
+                else if (_sortOption == "Price")
+                {
+                    filteredList = filteredList.OrderBy(p => p?.Price);
+                }
+
                 return new ObservableCollection<Product?>(filteredList);
             }
         }

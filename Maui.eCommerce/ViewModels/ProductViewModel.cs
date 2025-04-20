@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace Maui.eCommerce.ViewModels
 {
+    // Update Maui.eCommerce/ViewModels/ProductViewModel.cs
     public class ProductViewModel
     {
         public string? Name { 
@@ -21,6 +22,36 @@ namespace Maui.eCommerce.ViewModels
                 if(Model != null && Model.Name != value)
                 {
                     Model.Name = value;
+                }
+            }
+        }
+    
+        public decimal Price { 
+            get
+            {
+                return Model?.Price ?? 0.0m;
+            }
+
+            set
+            {
+                if(Model != null && Model.Price != value)
+                {
+                    Model.Price = value;
+                }
+            }
+        }
+    
+        public int StockQuantity { 
+            get
+            {
+                return Model?.StockQuantity ?? 0;
+            }
+
+            set
+            {
+                if(Model != null && Model.StockQuantity != value)
+                {
+                    Model.StockQuantity = value;
                 }
             }
         }

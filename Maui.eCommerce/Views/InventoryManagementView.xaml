@@ -2,51 +2,79 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.InventoryManagementView"
-             Title="InventoryManagementView"
+             Title="Inventory Management"
              NavigatedTo="ContentPage_NavigatedTo"
              >
-    <VerticalStackLayout>
-        <Grid>
+    <VerticalStackLayout Padding="10">
+        <Grid ColumnSpacing="10" Margin="0,0,0,10">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="10*"/>
-                <ColumnDefinition/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <Entry Text="{Binding Query}" Grid.Column="0"/>
+            <Entry Text="{Binding Query}" Placeholder="Search products" />
             <Button Text="Search" Grid.Column="1" Clicked="SearchClicked"/>
+            <Picker Grid.Column="2"
+                    Title="Sort By"
+                    SelectedItem="{Binding SortOption}"
+                    WidthRequest="120">
+                <Picker.Items>
+                    <x:String>Name</x:String>
+                    <x:String>Price</x:String>
+                </Picker.Items>
+            </Picker>
         </Grid>
+        
         <ListView
             ItemsSource="{Binding Path=Products}"
             SelectedItem="{Binding SelectedProduct}"
-            >
+            HasUnevenRows="True"
+            Margin="0,0,0,10">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>
-                        <Grid>
+                        <Grid Padding="10" ColumnSpacing="10">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="10*"/>
-                                <ColumnDefinition/>
-                                <ColumnDefinition/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
-                            <Label Grid.Column="0" Text="{Binding Display}"/>
-                            <Button Grid.Column="1" Text="Edit"/>
-                            <Button Grid.Column="2" Text="Delete"/>
+                            
+                            <VerticalStackLayout>
+                                <Label Text="{Binding Display}" FontAttributes="Bold"/>
+                                <Label Text="{Binding StockQuantity, StringFormat='In Stock: {0}'}" 
+                                       TextColor="Gray"
+                                       FontSize="Small"/>
+                            </VerticalStackLayout>
+                            
+                            <Entry Grid.Column="1" 
+                                   Placeholder="Qty" 
+                                   WidthRequest="60"
+                                   Keyboard="Numeric"
+                                   ClassId="{Binding Id}"
+                                   x:Name="QuantityEntry"/>
+                            
+                            <Button Grid.Column="2" 
+                                    Text="+" 
+                                    WidthRequest="40"
+                                    HeightRequest="40"
+                                    Padding="0"
+                                    Clicked="AddToCart_Clicked"/>
+                            
+                            <Button Grid.Column="3" Text="Edit" Clicked="EditItem_Clicked"/>
+                            <Button Grid.Column="4" Text="Delete" Clicked="DeleteItem_Clicked"/>
                         </Grid>
                     </ViewCell>
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        <Button Text="Add" Clicked="AddClicked"/>
-        <Button
-      Text="Edit"
-         Clicked="EditClicked"
-      />
-        <Button
-      Text="Delete"
-      Clicked="DeleteClicked"
-      />
-        <Button
-            Text="Go Back"
-            Clicked="CancelClicked"
-            />
+        
+        <HorizontalStackLayout Spacing="10" HorizontalOptions="Center">
+            <Button Text="Add New Product" Clicked="AddClicked"/>
+            <Button Text="View Cart" Clicked="ViewCartClicked"/>
+            <Button Text="Go Back" Clicked="CancelClicked"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

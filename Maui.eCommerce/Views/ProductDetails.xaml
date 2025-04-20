@@ -2,18 +2,57 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="Maui.eCommerce.Views.ProductDetails"
-             Title="ProductDetails"
-             NavigatedTo="ContentPage_NavigatedTo"
-             >
-    <VerticalStackLayout>
+             Title="Product Details"
+             NavigatedTo="ContentPage_NavigatedTo">
+    <VerticalStackLayout Padding="20" Spacing="15">
         <Label 
-            Text="Name:"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-        <Entry
-            Text="{Binding Name}"
-            />
-        <Button Text="Ok" Clicked="OkClicked"/>
-        <Button Text="Go Back" Clicked="GoBackClicked"/>
+            Text="Product Details"
+            FontSize="24"
+            HorizontalOptions="Center"
+            Margin="0,0,0,10" />
+            
+        <Grid RowSpacing="10" ColumnSpacing="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            
+            <Label 
+                Text="Name:"
+                VerticalOptions="Center" />
+            <Entry
+                Grid.Column="1"
+                Text="{Binding Name}" />
+                
+            <Label 
+                Grid.Row="1"
+                Text="Price ($):"
+                VerticalOptions="Center" />
+            <Entry
+                Grid.Row="1"
+                Grid.Column="1"
+                Text="{Binding Price}"
+                Keyboard="Numeric" />
+                
+            <Label 
+                Grid.Row="2"
+                Text="Stock Quantity:"
+                VerticalOptions="Center" />
+            <Entry
+                Grid.Row="2"
+                Grid.Column="1"
+                Text="{Binding StockQuantity}"
+                Keyboard="Numeric" />
+        </Grid>
+        
+        <HorizontalStackLayout HorizontalOptions="Center" Spacing="10" Margin="0,20,0,0">
+            <Button Text="Save" Clicked="OkClicked"/>
+            <Button Text="Cancel" Clicked="GoBackClicked"/>
+        </HorizontalStackLayout>
     </VerticalStackLayout>
 </ContentPage>

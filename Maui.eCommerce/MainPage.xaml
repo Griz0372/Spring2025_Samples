@@ -4,15 +4,39 @@
              x:Class="Maui.eCommerce.MainPage">
 
     <ScrollView>
-        <VerticalStackLayout>
+        <VerticalStackLayout Padding="20" Spacing="20">
+            <Label
+                Text="eCommerce App"
+                FontSize="32"
+                HorizontalOptions="Center"
+                Margin="0,20,0,0" />
+                
+            <Image
+                Source="dotnet_bot.png"
+                HeightRequest="200"
+                HorizontalOptions="Center" />
+                
             <Label
                 Text="{Binding Display}"
-                />
-            <Button
-            Text="Inventory Management"
-                Clicked="InventoryClicked"/>
-            <Button
-            Text="Shop"/>
+                HorizontalOptions="Center" />
+                
+            <VerticalStackLayout Spacing="10" Margin="0,20,0,0">
+                <Button
+                    Text="Inventory Management"
+                    Clicked="InventoryClicked" />
+                    
+                <Button
+                    Text="Shop Now"
+                    Clicked="ShopClicked" />
+                    
+                <Button
+                    Text="View Cart"
+                    Clicked="CartClicked" />
+                    
+                <Button
+                    Text="Configuration"
+                    Clicked="ConfigClicked" />
+            </VerticalStackLayout>
         </VerticalStackLayout>
     </ScrollView>
 

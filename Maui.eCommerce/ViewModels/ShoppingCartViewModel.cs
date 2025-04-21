@@ -8,15 +8,50 @@ namespace Maui.eCommerce.ViewModels
 {
     public class ShoppingCartViewModel : INotifyPropertyChanged
     {
+        private CartManagerService _cartManager = CartManagerService.Current;
+        private int _selectedCartId;
+        
         private string _sortOption = "Name";
         private CartItem? _selectedItem;
+        
+        private ObservableCollection<int> _availableCarts;
+
+        public ObservableCollection<int> AvailableCarts
+        {
+            get => _availableCarts;
+            set
+            {
+                _availableCarts = value;
+                NotifyPropertyChanged();
+            }
+        }
+
+        public int SelectedCartId
+        {
+            get => _selectedCartId;
+            set
+            {
+                _selectedCartId = value;
+                Console.WriteLine("Selected Cart ID is: " + _selectedCartId);
+                NotifyPropertyChanged();
+            }
+        }
+        
         
         public ObservableCollection<CartItem> Items 
         { 
             get 
             {
-                var items = ShoppingCartService.Current.Items;
-                
+                int activeCartId = CartManagerService.Current.ActiveCartID;
+        
+                if (!CartManagerService.Current.CartItems.TryGetValue(activeCartId, out var activeCart))
+                {
+                    return new ObservableCollection<CartItem>();
+                }
+        
+                var items = activeCart.Items;
+        
+                // Apply sorting if needed
                 if (_sortOption == "Name")
                 {
                     items = items.OrderBy(i => i.Product?.Name).ToList();
@@ -25,7 +60,7 @@ namespace Maui.eCommerce.ViewModels
                 {
                     items = items.OrderBy(i => i.Product?.Price).ToList();
                 }
-                
+        
                 return new ObservableCollection<CartItem>(items);
             }
         }
@@ -57,28 +92,33 @@ namespace Maui.eCommerce.ViewModels
             }
         }
         
-        public decimal Subtotal => ShoppingCartService.Current.Subtotal;
-        public decimal Tax => ShoppingCartService.Current.Tax;
-        public decimal Total => ShoppingCartService.Current.Total;
+        
+        int activeCartId = CartManagerService.Current.ActiveCartID;
+        public decimal Subtotal => _cartManager.CartItems[activeCartId].Subtotal;
+        public decimal Tax => _cartManager.CartItems[activeCartId].Tax;
+        public decimal Total => _cartManager.CartItems[activeCartId].Total;
         
         public void RemoveItem()
         {
             if (SelectedItem?.Product != null)
             {
-                ShoppingCartService.Current.RemoveFromCart(SelectedItem.Product.Id);
+                int activeCartId = CartManagerService.Current.ActiveCartID;
+                _cartManager.CartItems[activeCartId].RemoveFromCart(SelectedItem.Product.Id);
                 RefreshCart();
             }
         }
         
         public void UpdateQuantity(int productId, int quantity)
         {
-            ShoppingCartService.Current.UpdateQuantity(productId, quantity);
+            int activeCartId = CartManagerService.Current.ActiveCartID;
+            _cartManager.CartItems[activeCartId].UpdateQuantity(productId, quantity);
             RefreshCart();
         }
         
         public void ClearCart()
         {
-            ShoppingCartService.Current.ClearCart();
+            int activeCartId = CartManagerService.Current.ActiveCartID;
+            _cartManager.CartItems[activeCartId].ClearCart();
             RefreshCart();
         }
         

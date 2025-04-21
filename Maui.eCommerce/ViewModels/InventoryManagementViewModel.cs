@@ -32,23 +32,6 @@ namespace Maui.eCommerce.ViewModels
             }
         }
 
-        public event PropertyChangedEventHandler? PropertyChanged;
-
-        public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
-        {
-            if (propertyName is null)
-            {
-                throw new ArgumentNullException(nameof(propertyName));
-            }
-
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        public void RefreshProductList()
-        {
-            NotifyPropertyChanged(nameof(Products));
-        }
-
         public ObservableCollection<Product?> Products
         {
             get
@@ -69,12 +52,30 @@ namespace Maui.eCommerce.ViewModels
                 return new ObservableCollection<Product?>(filteredList);
             }
         }
-
+        
         public Product? Delete()
         {
             var item = _svc.Delete(SelectedProduct?.Id ?? 0);
             NotifyPropertyChanged("Products");
             return item;
+        }
+
+        
+        public event PropertyChangedEventHandler? PropertyChanged;
+        public void RefreshProductList()
+        {
+            NotifyPropertyChanged(nameof(Products));
+        }
+
+        
+        public void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            if (propertyName is null)
+            {
+                throw new ArgumentNullException(nameof(propertyName));
+            }
+
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

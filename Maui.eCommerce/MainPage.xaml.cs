@@ -1,10 +1,11 @@
-﻿// Update Maui.eCommerce/MainPage.xaml.cs
-using Maui.eCommerce.ViewModels;
+﻿using Maui.eCommerce.ViewModels;
 
 namespace Maui.eCommerce
 {
     public partial class MainPage : ContentPage
+    
     {
+        private ShoppingCartManagementViewModel _viewModel;
         public MainPage()
         {
             InitializeComponent();
@@ -35,6 +36,7 @@ namespace Maui.eCommerce
         private void CartSelected(object sender, EventArgs e)
         {
             Console.WriteLine("Cart Selected");
+            //Dont know what to do from here
         }
     }
 }

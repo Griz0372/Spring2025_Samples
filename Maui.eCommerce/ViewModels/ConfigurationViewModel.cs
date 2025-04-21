@@ -7,6 +7,7 @@ namespace Maui.eCommerce.ViewModels
     public class ConfigurationViewModel : INotifyPropertyChanged
     {
         private decimal _taxRate;
+        private CartManagerService _cartManager = CartManagerService.Current;
         
         public decimal TaxRate
         {
@@ -16,7 +17,8 @@ namespace Maui.eCommerce.ViewModels
                 if (_taxRate != value)
                 {
                     _taxRate = value;
-                    ShoppingCartService.Current.TaxRate = value / 100.0m; // Convert percentage to decimal
+                    int activeCartId = CartManagerService.Current.ActiveCartID;
+                    _cartManager.CartItems[activeCartId].TaxRate = value / 100.0m; // Convert percentage to decimal
                     NotifyPropertyChanged();
                 }
             }
@@ -24,7 +26,8 @@ namespace Maui.eCommerce.ViewModels
         
         public ConfigurationViewModel()
         {
-            _taxRate = ShoppingCartService.Current.TaxRate * 100.0m; // Convert decimal to percentage
+            int activeCartId = CartManagerService.Current.ActiveCartID;
+            _taxRate = _cartManager.CartItems[activeCartId].TaxRate * 100.0m; // Convert decimal to percentage
         }
         
         public event PropertyChangedEventHandler? PropertyChanged;

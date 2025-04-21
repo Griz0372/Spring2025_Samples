@@ -7,7 +7,6 @@ using Library.eCommerce.Services;
 public class ShoppingCartManagementViewModel : INotifyPropertyChanged
 {
     private ShoppingCartService _selectedCart;
-    
     public ShoppingCartService? SelectedCart
     {
         get => _selectedCart;

@@ -1,4 +1,5 @@
 ﻿using Maui.eCommerce.ViewModels;
+using Library.eCommerce.Services;
 
 namespace Maui.eCommerce
 {
@@ -6,6 +7,7 @@ namespace Maui.eCommerce
     
     {
         private ShoppingCartManagementViewModel _viewModel;
+        
         public MainPage()
         {
             InitializeComponent();
@@ -35,8 +37,31 @@ namespace Maui.eCommerce
 
         private void CartSelected(object sender, EventArgs e)
         {
-            Console.WriteLine("Cart Selected");
-            //Dont know what to do from here
+            Button button = (Button)sender;
+            string buttonText = button.Text;
+    
+            // Extract the cart number from the button text (e.g., "Cart 1" -> 1)
+            if (int.TryParse(buttonText.Replace("Cart ", ""), out int cartId))
+            {
+                try
+                {
+                    // If the cart doesn't exist yet, create it
+                    if (!CartManagerService.Current.CartItems.ContainsKey(cartId))
+                    {
+                        CartManagerService.Current.CreateNewCart();
+                    }
+            
+                    // Switch to the selected cart
+                    CartManagerService.Current.SwitchActiveCart(cartId);
+            
+                    // Provide feedback to the user
+                    DisplayAlert("Cart Selected", $"You are now using {buttonText}", "OK");
+                }
+                catch (Exception ex)
+                {
+                    DisplayAlert("Error", ex.Message, "OK");
+                }
+            }
         }
     }
 }

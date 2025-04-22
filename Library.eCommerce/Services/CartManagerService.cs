@@ -26,8 +26,12 @@ public class CartManagerService
     public static int numberOfCarts { get; set; }
     private CartManagerService()
     {
+        
+        CartItems.Add(0, new ShoppingCartService());
+        CartItems.Add(1, new ShoppingCartService());
+        
         CartItems = new Dictionary<int, ShoppingCartService>();
-        numberOfCarts = 1;
+        numberOfCarts = 2;
         ActiveCartID = 0;
     }
 
@@ -48,6 +52,49 @@ public class CartManagerService
         ShoppingCartService newShoppingCartService = new ShoppingCartService();
         CartItems.Add(numberOfCarts++, newShoppingCartService);
         
+    }
+    
+    public void PrintAllCarts()
+    {
+        if (CartItems.Count == 0)
+        {
+            Console.WriteLine("No carts available.");
+            return;
+        }
+    
+        Console.WriteLine("===== ALL SHOPPING CARTS =====");
+        Console.WriteLine();
+    
+        foreach (var cartEntry in CartItems)
+        {
+            int cartId = cartEntry.Key;
+            ShoppingCartService cart = cartEntry.Value;
+        
+            Console.WriteLine($"CART #{cartId}" + (cartId == ActiveCartID ? " (ACTIVE)" : ""));
+            Console.WriteLine("----------------------------------------");
+        
+            if (cart.Items.Count == 0)
+            {
+                Console.WriteLine("This cart is empty.");
+            }
+            else
+            {
+                foreach (var item in cart.Items)
+                {
+                    Console.WriteLine($"{item.Product?.Name} - ${item.Product?.Price:F2} x {item.Quantity} = ${item.Subtotal:F2}");
+                }
+            
+                Console.WriteLine("----------------------------------------");
+                Console.WriteLine($"Subtotal: ${cart.Subtotal:F2}");
+                Console.WriteLine($"Tax: ${cart.Tax:F2} ({cart.TaxRate * 100:F2}%)");
+                Console.WriteLine($"Total: ${cart.Total:F2}");
+            }
+        
+            Console.WriteLine();
+            Console.WriteLine();
+        }
+    
+        Console.WriteLine("===============================");
     }
     
     

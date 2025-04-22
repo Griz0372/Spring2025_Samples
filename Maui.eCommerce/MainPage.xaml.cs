@@ -12,7 +12,7 @@ namespace Maui.eCommerce
         {
             InitializeComponent();
             BindingContext = new MainViewModel();
-            BindingContext = new ShoppingCartManagementViewModel();
+            //BindingContext = new ShoppingCartManagementViewModel();
         }
 
         private void InventoryClicked(object sender, EventArgs e)
@@ -45,10 +45,14 @@ namespace Maui.eCommerce
             {
                 try
                 {
-                    // If the cart doesn't exist yet, create it
-                    if (!CartManagerService.Current.CartItems.ContainsKey(cartId))
+                    // If the cart doesn't exist yet, create all necessary carts up to this ID
+                    for (int i = 0; i <= cartId; i++)
                     {
-                        CartManagerService.Current.CreateNewCart();
+                        if (!CartManagerService.Current.CartItems.ContainsKey(i))
+                        {
+                            ShoppingCartService newCart = new ShoppingCartService();
+                            CartManagerService.Current.CartItems.Add(i, newCart);
+                        }
                     }
             
                     // Switch to the selected cart

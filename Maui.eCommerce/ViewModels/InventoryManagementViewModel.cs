@@ -48,7 +48,6 @@ namespace Maui.eCommerce.ViewModels
                 {
                     filteredList = filteredList.OrderBy(p => p?.Price);
                 }
-
                 return new ObservableCollection<Product?>(filteredList);
             }
         }

@@ -93,10 +93,9 @@ namespace Maui.eCommerce.ViewModels
         }
         
         
-        int activeCartId = CartManagerService.Current.ActiveCartID;
-        public decimal Subtotal => _cartManager.CartItems[activeCartId].Subtotal;
-        public decimal Tax => _cartManager.CartItems[activeCartId].Tax;
-        public decimal Total => _cartManager.CartItems[activeCartId].Total;
+        public decimal Subtotal => _cartManager.CartItems[_cartManager.ActiveCartID].Subtotal;
+        public decimal Tax => _cartManager.CartItems[_cartManager.ActiveCartID].Tax;
+        public decimal Total => _cartManager.CartItems[_cartManager.ActiveCartID].Total;
         
         public void RemoveItem()
         {

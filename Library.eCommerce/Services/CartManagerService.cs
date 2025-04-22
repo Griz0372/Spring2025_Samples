@@ -26,11 +26,11 @@ public class CartManagerService
     public static int numberOfCarts { get; set; }
     private CartManagerService()
     {
-        
+        CartItems = new Dictionary<int, ShoppingCartService>();
         CartItems.Add(0, new ShoppingCartService());
         CartItems.Add(1, new ShoppingCartService());
         
-        CartItems = new Dictionary<int, ShoppingCartService>();
+        
         numberOfCarts = 2;
         ActiveCartID = 0;
     }

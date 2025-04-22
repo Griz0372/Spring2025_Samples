@@ -62,17 +62,19 @@ public partial class InventoryManagementView : ContentPage
         {
             // Find the quantity entry for this product
             var quantityEntry = button.Parent.FindByName<Entry>("QuantityEntry");
+            int activeCartId = CartManagerService.Current.ActiveCartID;
             
             if (quantityEntry != null && int.TryParse(quantityEntry.Text, out int quantity) && quantity > 0)
             {
-                ShoppingCartService.Current.AddToCart(product, quantity);
+                //ShoppingCartService.Current.AddToCart(product, quantity);
+                CartManagerService.Current.CartItems[activeCartId].AddToCart(product, quantity);
                 quantityEntry.Text = string.Empty;
                 DisplayAlert("Success", $"{quantity} x {product.Name} added to cart", "OK");
             }
             else
             {
                 // Default to adding 1 item if no valid quantity is specified
-                ShoppingCartService.Current.AddToCart(product, 1);
+                CartManagerService.Current.CartItems[activeCartId].AddToCart(product, 1);
                 DisplayAlert("Success", $"1 x {product.Name} added to cart", "OK");
             }
         }

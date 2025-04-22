@@ -6,25 +6,8 @@ namespace Library.eCommerce.Services
 {
     public class ShoppingCartService
     {
-        private static ShoppingCartService? instance;
-        private static object instanceLock = new object();
-        
-        public static ShoppingCartService Current
-        {
-            get
-            {
-                lock(instanceLock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new ShoppingCartService();
-                    }
-                }
-                
-                return instance;
-            }
-        }
-        private ShoppingCartService()
+
+        public ShoppingCartService()
         {
             Items = new List<CartItem>();
         }

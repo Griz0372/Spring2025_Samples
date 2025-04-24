@@ -60,22 +60,49 @@ public partial class InventoryManagementView : ContentPage
         
         if (product != null)
         {
-            // Find the quantity entry for this product
             var quantityEntry = button.Parent.FindByName<Entry>("QuantityEntry");
             int activeCartId = CartManagerService.Current.ActiveCartID;
             
             if (quantityEntry != null && int.TryParse(quantityEntry.Text, out int quantity) && quantity > 0)
             {
-                //ShoppingCartService.Current.AddToCart(product, quantity);
-                CartManagerService.Current.CartItems[activeCartId].AddToCart(product, quantity);
-                quantityEntry.Text = string.Empty;
-                DisplayAlert("Success", $"{quantity} x {product.Name} added to cart", "OK");
+                if (product.StockQuantity < quantity)
+                {
+                    DisplayAlert("Error", $"Not enough stock available. Only {product.StockQuantity} items available.", "OK");
+                    return;
+                }
+                
+                bool success = CartManagerService.Current.CartItems[activeCartId].AddToCart(product, quantity);
+                
+                if (success)
+                {
+                    quantityEntry.Text = string.Empty;
+                    DisplayAlert("Success", $"{quantity} x {product.Name} added to cart", "OK");
+                    _viewModel.RefreshProductList(); // Refresh the list to show updated quantities
+                }
+                else
+                {
+                    DisplayAlert("Error", $"Not enough stock available. Only {product.StockQuantity} items available.", "OK");
+                }
             }
             else
             {
-                // Default to adding 1 item if no valid quantity is specified
-                CartManagerService.Current.CartItems[activeCartId].AddToCart(product, 1);
-                DisplayAlert("Success", $"1 x {product.Name} added to cart", "OK");
+                if (product.StockQuantity < 1)
+                {
+                    DisplayAlert("Error", "This item is out of stock.", "OK");
+                    return;
+                }
+                
+                bool success = CartManagerService.Current.CartItems[activeCartId].AddToCart(product, 1);
+                
+                if (success)
+                {
+                    DisplayAlert("Success", $"1 x {product.Name} added to cart", "OK");
+                    _viewModel.RefreshProductList(); // Refresh the list to show updated quantities
+                }
+                else
+                {
+                    DisplayAlert("Error", "This item is out of stock.", "OK");
+                }
             }
         }
     }

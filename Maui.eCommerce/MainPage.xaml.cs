@@ -12,7 +12,6 @@ namespace Maui.eCommerce
         {
             InitializeComponent();
             BindingContext = new MainViewModel();
-            //BindingContext = new ShoppingCartManagementViewModel();
         }
 
         private void InventoryClicked(object sender, EventArgs e)
@@ -40,12 +39,10 @@ namespace Maui.eCommerce
             Button button = (Button)sender;
             string buttonText = button.Text;
     
-            // Extract the cart number from the button text (e.g., "Cart 1" -> 1)
             if (int.TryParse(buttonText.Replace("Cart ", ""), out int cartId))
             {
                 try
                 {
-                    // If the cart doesn't exist yet, create all necessary carts up to this ID
                     for (int i = 0; i <= cartId; i++)
                     {
                         if (!CartManagerService.Current.CartItems.ContainsKey(i))
@@ -55,10 +52,8 @@ namespace Maui.eCommerce
                         }
                     }
             
-                    // Switch to the selected cart
                     CartManagerService.Current.SwitchActiveCart(cartId);
             
-                    // Provide feedback to the user
                     DisplayAlert("Cart Selected", $"You are now using {buttonText}", "OK");
                 }
                 catch (Exception ex)
